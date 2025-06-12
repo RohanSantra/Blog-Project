@@ -1,35 +1,39 @@
 import { useEffect, useState } from "react"
 import { Container, Loader, PostForm } from "../components/index"
-import service from "../Appwrite/config"
 import { useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { hideLoader, showLoader } from "../Store/loaderSlice"
+import { fetchPost } from "../Store/postSlice"
+
+
 export default function EditPost() {
     const [post, setPost] = useState(null)
     const { slug } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const loading = useSelector((state) => state.loader.loading)
-
+    const { loading, error } = useSelector((state) => state.posts)
     useEffect(() => {
-        dispatch(showLoader())
-        if (slug) {
-            service.getPost(slug)
-                .then((post) => {
-                    if (post) {
-                        setPost(post);
-                    }
+        if (!slug) return
 
-                })
-                .catch((error) => {
-                    console.log("Something went wrong : ", error)
-                    navigate('*');
-                })
-                .finally(() => dispatch(hideLoader()))
-        } else {
-            navigate('/')
+        const fetchSinglePost = async () => {
+            try {
+                const resultAction = await dispatch(fetchPost(slug));
+                if (fetchPost.fulfilled.match(resultAction)) {
+                    setPost(resultAction.payload)
+                } else {
+                    console.error("Failed to fetch post:", resultAction.payload);
+                    navigate("*");
+                }
+            } catch (error) {
+                console.error("Unexpected error:", error);
+                navigate("*");
+            }
         }
+
+        fetchSinglePost();
     }, [slug, navigate])
+
+    if (error) console.log(error);
+    if (loading) return <Loader />;
 
     return !!post && (
         <>

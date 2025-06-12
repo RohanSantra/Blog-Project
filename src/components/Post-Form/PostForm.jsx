@@ -112,7 +112,7 @@ export default function PostForm({ post }) {
     <>
       {loading && <Loader />}
       <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-        <div className="w-2/3 px-2">
+        <div className="md:w-2/3 w-full px-2">
           <Input
             label="Title :"
             placeholder="Title"
@@ -130,7 +130,7 @@ export default function PostForm({ post }) {
           />
           <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
         </div>
-        <div className="w-1/3 px-2">
+        <div className="w-full md:w-1/3 px-2 md:mt-0 mt-4">
           <Input
             label="Featured Image :"
             type="file"

@@ -2,10 +2,12 @@ import { useDispatch, useSelector } from "react-redux"
 import authService from "../../Appwrite/auth"
 import { logout } from "../../Store/authSlice"
 import { hideLoader, showLoader } from "../../Store/loaderSlice"
-import {Loader} from "../index"
+import { Loader } from "../index"
+import { useNavigate } from "react-router-dom"
 
 function LogoutBtn() {
     const dispatch = useDispatch()
+    const navigate=useNavigate()
     const loading = useSelector((state) => state.loader.loading)
     const logouthandler = () => {
         dispatch(showLoader())
@@ -14,7 +16,10 @@ function LogoutBtn() {
                 dispatch(logout())
             })
             .catch((error) => console.log("Something went wrong : ", error))
-            .finally(() => dispatch(hideLoader()))
+            .finally(() => {
+                navigate('/');
+                dispatch(hideLoader())
+            })
     }
     return (
         <>
