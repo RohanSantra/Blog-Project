@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet } from "react-router-dom";
 import authService from './Appwrite/auth'
-import { login, logout } from "./Store/authSlice";
+import { fetchCurrentUser, login, logout } from "./Store/authSlice";
 import { Footer, Header, Loader } from "./components/index";
 
 function App() {
@@ -14,8 +14,9 @@ function App() {
     authService.getCurrentUser()
       .then((userData) => {
         userData ? dispatch(login({ userData })) : dispatch(logout());
+        dispatch(fetchCurrentUser());
       })
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className=" min-h-screen flex flex-wrap content-between bg-gray-950 text-gray-50 selection:bg-gray-50 selection:text-gray-950">

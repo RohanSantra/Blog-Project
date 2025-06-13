@@ -85,7 +85,6 @@ const postSlice = createSlice({
     name: "posts", // was missing quotes
     initialState: {
         posts: [],
-        userPost: [],
         error: '',
         loading: false,
     },
@@ -137,7 +136,6 @@ const postSlice = createSlice({
             })
             .addCase(fetchUserPosts.fulfilled, (state, action) => {
                 state.loading = false;
-                state.userPost = action.payload;
             })
             .addCase(fetchUserPosts.rejected, (state, action) => {
                 state.loading = false;
