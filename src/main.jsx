@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { Provider } from 'react-redux'
 import store from './Store/store.js'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createHashRouter, RouterProvider } from 'react-router-dom'
 import { AuthLayout } from './components/index.js'
 import Home from './Pages/Home.jsx'
 import Login from './Pages/Login.jsx'
@@ -16,7 +16,7 @@ import AddPost from './Pages/AddPost.jsx'
 import PageNotFound from './Pages/PageNotFound.jsx'
 import MyPosts from './Pages/MyPost.jsx'
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <App />,
