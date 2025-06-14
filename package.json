@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://rohansantra.github.io/blog-project",
+  "homepage": "https://rohansantra.github.io/Blog-Project",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
