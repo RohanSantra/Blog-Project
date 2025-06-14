@@ -27,8 +27,28 @@ function Signup() {
         }
     }
     return (
-        <div className="flex items-center justify-center py-16">
-            <div className={`mx-auto w-full max-w-lg rounded-xl p-10 border`}>
+        <div className="relative flex items-center justify-center py-16">
+            {/* Background Grid */}
+            <div className="absolute -top-10 left-0 w-48 lg:w-70 h-48 lg:h-70 
+                [--color:rgba(114,114,114,0.3)]
+                [background-image:radial-gradient(rgba(255,255,255,0.171)_2px,transparent_0)]
+                [background-size:30px_30px]
+                [mask-image:radial-gradient(circle_at_top_left,white,transparent)]
+                [mask-size:100%_100%]
+                [mask-repeat:no-repeat]
+                pointer-events-none" />
+
+            <div className="absolute -top-10 right-0 w-48 lg:w-70 h-48 lg:h-70 
+                [--color:rgba(114,114,114,0.3)]
+                [background-image:radial-gradient(rgba(255,255,255,0.171)_2px,transparent_0)]
+                [background-size:30px_30px]
+                [mask-image:radial-gradient(circle_at_top_right,white,transparent)]
+                [mask-size:100%_100%]
+                [mask-repeat:no-repeat]
+                pointer-events-none" />
+
+            {/* Signup component */}
+            <div className={`mx-auto w-full max-w-lg rounded-xl p-10 md:border`}>
                 <div className="mb-2 flex justify-center">
                     <span className="inline-block w-full max-w-[100px]">
                         <Logo width="100%" />
@@ -79,7 +99,7 @@ function Signup() {
                     Already have an account?&nbsp;
                     <Link
                         to="/login"
-                        className="font-medium text-primary transition-all duration-200 hover:underline"
+                        className="font-medium text-cyan-300 transition-all duration-200 hover:underline"
                     >
                         Sign In
                     </Link>

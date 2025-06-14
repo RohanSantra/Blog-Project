@@ -28,8 +28,28 @@ function Login() {
     }
     return (
         <div
-            className='flex items-center justify-center w-full py-24'>
-            <div className={`mx-auto w-full max-w-lg rounded-xl p-10 border border-white`}>
+            className='relative flex items-center justify-center w-full py-24'>
+            {/* Background Grid */}
+            <div className="absolute -top-10 left-0 w-48 lg:w-70 h-48 lg:h-70 
+                [--color:rgba(114,114,114,0.3)]
+                [background-image:radial-gradient(rgba(255,255,255,0.171)_2px,transparent_0)]
+                [background-size:30px_30px]
+                [mask-image:radial-gradient(circle_at_top_left,white,transparent)]
+                [mask-size:100%_100%]
+                [mask-repeat:no-repeat]
+                pointer-events-none" />
+
+            <div className="absolute -top-10 right-0 w-48 lg:w-70 h-48 lg:h-70 
+                [--color:rgba(114,114,114,0.3)]
+                [background-image:radial-gradient(rgba(255,255,255,0.171)_2px,transparent_0)]
+                [background-size:30px_30px]
+                [mask-image:radial-gradient(circle_at_top_right,white,transparent)]
+                [mask-size:100%_100%]
+                [mask-repeat:no-repeat]
+                pointer-events-none" />
+
+            {/* Login component */}
+            <div className={`mx-auto w-full max-w-lg rounded-xl p-10 md:border`}>
                 <div className="mb-2 flex justify-center">
                     <span className="inline-block w-full max-w-[100px]">
                         <Logo width="100%" />
@@ -76,7 +96,7 @@ function Login() {
                 <p className="mt-4 text-center text-base text-gray/60">
                     Don&apos;t have any account?&nbsp;
                     <Link to="/signup"
-                        className="font-medium text-primary transition-all duration-200 hover:underline">
+                        className="font-medium text-cyan-300 transition-all duration-200 hover:underline">
                         Sign Up
                     </Link>
                 </p>

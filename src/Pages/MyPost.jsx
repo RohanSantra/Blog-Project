@@ -1,50 +1,93 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, PostCard, Loader } from '../components';
+import { Container, PostCard, Loader, MessageDisplay } from '../components';
 import { fetchUserPosts } from '../Store/postSlice';
-import { FilePlus } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { hideLoader, showLoader } from '../Store/loaderSlice';
+import { Cpu, Star, Clock, PlusCircle, FilePlus } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function MyPosts() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-
     const { userData, status } = useSelector((state) => state.auth);
-    // const loading = useSelector((state) => state.loader.loading);
     const { loading, error } = useSelector((state) => state.posts);
-
     const [userPost, setUserPost] = useState([]);
-    const userId = userData?.$id;
-
 
     useEffect(() => {
         if (status && userData?.$id) {
             const fetchAllUserPost = async () => {
                 const resultAction = await dispatch(fetchUserPosts(userData.$id));
                 if (fetchUserPosts.fulfilled.match(resultAction)) {
-                    setUserPost(resultAction.payload);
+                    const sortedPosts = resultAction.payload.sort(
+                        (a, b) => new Date(b.$createdAt) - new Date(a.$createdAt)
+                    );
+                    setUserPost(sortedPosts);
                 }
             };
             fetchAllUserPost();
         }
     }, [dispatch, userData?.$id, status]);
 
+
     if (loading) return <Loader />;
     if (error) console.error(error);
+    console.log(userPost)
+
+    const latest = [...userPost];
+    //   const featured = [...userPost].slice(-3).reverse();
 
     return (
-        <div className="py-10">
-            <Container>
+        <div className="relative overflow-hidden py-8 px-4 bg-gray-950 text-gray-50">
+            {/* Background Grid */}
+            <div className="absolute top-0 left-0 w-48 lg:w-70 h-48 lg:h-70 
+      [--color:rgba(114,114,114,0.3)]
+      [background-image:radial-gradient(rgba(255,255,255,0.171)_2px,transparent_0)]
+      [background-size:30px_30px]
+      [mask-image:radial-gradient(circle_at_top_left,white,transparent)]
+      [mask-size:100%_100%]
+      [mask-repeat:no-repeat]
+      pointer-events-none" />
+
+            <div className="absolute top-0 right-0 w-48 lg:w-70 h-48 lg:h-70 
+      [--color:rgba(114,114,114,0.3)]
+      [background-image:radial-gradient(rgba(255,255,255,0.171)_2px,transparent_0)]
+      [background-size:30px_30px]
+      [mask-image:radial-gradient(circle_at_top_right,white,transparent)]
+      [mask-size:100%_100%]
+      [mask-repeat:no-repeat]
+      pointer-events-none" />
+
+
+            <Container className="relative z-10 space-y-16">
                 {userPost.length > 0 ? (
                     <>
-                        <h1 className="text-3xl font-bold text-center mb-6 uppercase">My Posts</h1>
-                        <div className="flex flex-wrap">
-                            {userPost.map((post) => (
-                                <div key={post.$id} className="px-4 py-2 w-full sm:w-1/2 md:w-1/3">
-                                    <PostCard {...post} />
+                        {/* Hero Section */}
+                        <div className="relative z-10 text-center px-4 py-20">
+                            <div className="inline-flex items-center gap-2 bg-yellow-500/10 px-4 py-2 rounded-full mb-4">
+                                <Cpu className="w-6 h-6 text-yellow-400" />
+                                <span className="font-medium">Your Dashboard</span>
+                            </div>
+                            <h1 className="text-4xl font-extrabold mb-4">Your Posts</h1>
+                            <p className="text-lg text-gray-300">View, manage, and grow your blog presence.</p>
+                        </div>
+
+                        {latest.length > 0 && (
+                            <section>
+                                <div className="flex items-center gap-2 my-6">
+                                    <Clock className="w-5 h-5 text-emerald-400" />
+                                    <h2 className="text-3xl font-semibold">Latest Posts</h2>
                                 </div>
-                            ))}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                    {latest.map((post) => (
+                                        <PostCard key={post.$id} {...post} />
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+
+                        <div className="mt-12 text-center">
+                            <Link to={'/add-post'} className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 text-gray-950 rounded-full hover:bg-emerald-400 transition">
+                                <PlusCircle className="w-5 h-5" />
+                                Add New Post
+                            </Link>
                         </div>
                     </>
                 ) : (
@@ -59,14 +102,15 @@ export default function MyPosts() {
                             <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
                                 <Link
                                     to="/add-post"
-                                    className="flex items-center justify-center gap-2 px-6 py-3 bg-white text-gray-900 font-semibold rounded-full hover:bg-gray-100 transition duration-200"
+                                    className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 text-gray-950 rounded-full hover:bg-emerald-400 transition"
                                 >
-                                    <FilePlus className="w-5 h-5" />
+                                    <PlusCircle className="w-5 h-5" />
                                     Add Post
                                 </Link>
                             </div>
                         </div>
                     </div>
+
                 )}
             </Container>
         </div>
