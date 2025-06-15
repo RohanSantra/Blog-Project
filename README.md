@@ -45,7 +45,7 @@ A modern, fully responsive blog platform built with **React 19**, **Redux Toolki
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/your-username/your-blog-app.git
-cd your-blog-app
+https://github.com/RohanSantra/Blog-Project.git
+cd Blog-Project
 npm install
 npm run dev
