@@ -36,58 +36,55 @@ export default function PostForm({ post }) {
 
   // Handle Submit of form
   const submit = async (data) => {
-    /*
-      If post exit :
-      1. upload new image
-      2. delete the previews image
-      3. updating the post
-      4. Navigating at the end
-  
-      else :
-      1. uploading the image
-      2. creating the post 
-      3. Navigating at the end 
-    */
-    dispatch(showLoader())
-    if (post) {
-      // updating Deleting preview image
-      const file = data.image[0] ? await service.uploadFile(data.image[0]) : null
-      if (file) {
-        await service.deleteFile(post.featuredImage)
+    dispatch(showLoader());
+
+    try {
+      const imageFile = data.image?.[0];
+      let uploadedFile = null;
+
+      // Step 1: Upload new image if available
+      if (imageFile) {
+        uploadedFile = await service.uploadFile(imageFile);
       }
 
-      // Updating post and redirecting
-      const dbPost = await service.updatePost(post.$id, {
-        ...data,
-        featuredImage: file ? file.$id : post.featuredImage
-      })
-        .catch((error) => {
-          console.log('Something went wrong:', error);
-        })
-        .finally(() => dispatch(hideLoader()));
-      if (dbPost) {
-        navigate(`/post/${dbPost.$id}`)
-      }
-    } else {
+      // Step 2: Update existing post
+      if (post) {
+        if (uploadedFile) {
+          await service.deleteFile(post.featuredImage);
+        }
 
-      // TODO : we can check if file image is there or not
-      const file = await service.uploadFile(data.image[0]);
+        const updatedPost = await service.updatePost(post.$id, {
+          ...data,
+          featuredImage: uploadedFile ? uploadedFile.$id : post.featuredImage,
+        });
 
-      if (file) {
-        const fileId = file.$id;
-        data.featuredImage = fileId;
-        const dbPost = await service.createPost({ ...data, userId: userData.$id })
-          .catch((error) => {
-            console.log('Something went wrong:', error);
-          })
-          .finally(() => dispatch(hideLoader()));
+        if (updatedPost) {
+          navigate(`/post/${updatedPost.$id}`);
+        }
 
-        if (dbPost) {
-          navigate(`/post/${dbPost.$id}`);
+      } else {
+        // Step 3: Create new post
+        if (!uploadedFile) {
+          throw new Error("Image upload failed. No file returned.");
+        }
+
+        const newPost = await service.createPost({
+          ...data,
+          featuredImage: uploadedFile.$id,
+          userId: userData.$id,
+        });
+
+        if (newPost) {
+          navigate(`/post/${newPost.$id}`);
         }
       }
+    } catch (error) {
+      console.error("Something went wrong during submission:", error);
+    } finally {
+      dispatch(hideLoader());
     }
-  }
+  };
+
 
   // Trasforming the title to url/slug
   const slugTransform = useCallback((value) => {
