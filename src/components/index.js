@@ -14,6 +14,7 @@ import AuthLayout from './AuthLayout'
 import PostForm from "./Post-Form/PostForm";
 import Loader from "./Loader";
 import MessageDisplay from "./MessageDisplay";
+import ScrollToTop from "./ScrollToTop";
 
 export {
     Header,
@@ -31,5 +32,6 @@ export {
     AuthLayout,
     PostForm,
     Loader,
-    MessageDisplay
+    MessageDisplay,
+    ScrollToTop
 }
