@@ -7,7 +7,7 @@ export default function ScrollToTop() {
 
   useEffect(() => {
     // Reset scroll to top-left corner
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [pathname]);
 
   return null;
