@@ -19,7 +19,7 @@ function Header() {
   ];
 
   return (
-    <header className="relative py-4 px-4 border-b border-gray-700 bg-gray-950 text-white z-50">
+    <header className="sticky top-0  py-4 px-4 border-b border-gray-700 bg-gray-950 text-white z-50">
       <Container>
         <nav className="flex items-center justify-between">
           <Link to="/">
