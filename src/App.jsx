@@ -23,9 +23,9 @@ function App() {
     <div className=" min-h-screen flex flex-wrap content-between bg-gray-950 text-gray-50 selection:bg-gray-50 selection:text-gray-950">
       <div className="w-full block ">
         <Header />
-        <ScrollRestoration />
         <main>
           <Outlet />
+          <ScrollRestoration />
         </main>
         <Footer />
       </div>

@@ -10,6 +10,13 @@ export default function AllPost() {
 
     useEffect(() => {
         dispatch(fetchPosts());
+
+        // To handle scroll position
+        const storedPosition = sessionStorage.getItem("my-post-scroll");
+        if (storedPosition) {
+            window.scrollTo({ top: parseInt(storedPosition), behavior: 'auto' });
+            sessionStorage.removeItem("my-post-scroll");
+        }
     }, [dispatch]);
 
     if (error) console.error(error);

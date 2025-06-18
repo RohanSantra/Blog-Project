@@ -16,10 +16,15 @@ export default function MyPosts() {
             const fetchAllUserPost = async () => {
                 const resultAction = await dispatch(fetchUserPosts(userData.$id));
                 if (fetchUserPosts.fulfilled.match(resultAction)) {
-                    const sortedPosts = resultAction.payload.sort(
-                        (a, b) => new Date(b.$createdAt) - new Date(a.$createdAt)
-                    );
+
+                    // To handle scroll position
+                    const sortedPosts = resultAction.payload;
                     setUserPost(sortedPosts);
+                    const storedPosition = sessionStorage.getItem("my-post-scroll");
+                    if (storedPosition) {
+                        window.scrollTo({ top: parseInt(storedPosition), behavior: 'auto' });
+                        sessionStorage.removeItem("my-post-scroll");
+                    }
                 }
             };
             fetchAllUserPost();
@@ -29,10 +34,8 @@ export default function MyPosts() {
 
     if (loading) return <Loader />;
     if (error) console.error(error);
-    console.log(userPost)
 
-    const latest = [...userPost];
-    //   const featured = [...userPost].slice(-3).reverse();
+    const latest = [...userPost].splice(-1).reverse();
 
     return (
         <div className="relative overflow-hidden py-8 px-4 bg-gray-950 text-gray-50">
